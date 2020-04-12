@@ -17,16 +17,18 @@ function post(string $board): void
     // Fuck you spamfag (not gonna name you either ;] )
     $torNodes  = file("tornodes", FILE_IGNORE_NEW_LINES);
     if (in_array($_SERVER["REMOTE_ADDR"], $torNodes)) {
-        echo "Get lost.";
+        header("HTTP/1.0 403 Forbidden", TRUE, 403);
         exit;
     }
     $rl = new RateLimit();
     $st = $rl->getSleepTime($_SERVER["REMOTE_ADDR"]);
     echo $st;
     if ($st > 0) {
-        echo "Please go away.";
+        header("HTTP/1.0 429 Too Many Requests", TRUE, 429);
+        exit;
     } elseif (!isset($_POST["content"])) {
-        echo "Fuck off.";
+        header("HTTP/1.0 204 No Content", TRUE, 204);
+        exit;
     } else {
         $reply = intval($_POST["replyTo"] ?? 0);
         $conn = new PDO("mysql:host={$servername};dbname={$dbname}", $username, $password);
