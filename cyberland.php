@@ -85,5 +85,6 @@ function get(string $board): void
             "time"      => $result["time"],
         ];
     }
+    header('Content-Type: application/json');
     echo json_encode($a);
 }
