@@ -1,0 +1,9 @@
+/i/ is for posting images!
+
+Grab a copy of Viu from this GitHub: https://github.com/atanunq/viu/releases
+
+Get an image that is about 50 by 50 pixels
+
+In your POST request, you can have the data as "content=$(./viu image.png)", for example:
+
+curl -d "content=$(./viu image.png)" "https://cyberland2.club/i/"
