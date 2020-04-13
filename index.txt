@@ -12,7 +12,7 @@ Cyberland is a textboard focused mainly on technology discussion and current aff
  - /t/ technloogy
  - /n/ news
  - /o/ off-topic
- - /i/ images
+ - /i/ images (experimental)
 
 Enjoy your stay!
 

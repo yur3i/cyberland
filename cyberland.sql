@@ -75,7 +75,7 @@ CREATE TABLE `tech` (
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 --
--- Table structure for table `images`
+-- Table structure for table `images` with big varchar limit
 --
 
 DROP TABLE IF EXISTS `images`;
