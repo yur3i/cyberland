@@ -1,18 +1,11 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 require_once("RateLimit.php");
-
-$servername = "localhost";
-$username   = "cybersql";
-// PASSWORD REDACTED
-$dbname     = "cyberland";
+$db_config = parse_ini_file("config/db.conf");
 
 function post(string $board): void
 {
-    global $servername;
-    global $dbname;
-    global $username;
-    global $password;
+    global $db_config;
 
     // Fuck you spamfag (not gonna name you either ;] )
     $torNodes  = file("tornodes", FILE_IGNORE_NEW_LINES);
@@ -31,15 +24,13 @@ function post(string $board): void
         exit;
     } else {
         $reply = intval($_POST["replyTo"] ?? 0);
-        $conn = new PDO("mysql:host={$servername};dbname={$dbname}", $username, $password);
+        $conn = new PDO("mysql:host={$db_config->username};dbname={$db_config->dbname}", $db_config->username, $db_config->password);
         $sql = "INSERT INTO {$board} (content, replyTo, bumpCount, time) VALUES (?,?,?,?)";
         $timeztamp = date("Y-m-d H:i:s");
         $repto = 0;
         $s = $conn->prepare($sql);
-        $s->bindParam(4, $timeztamp		          , PDO::PARAM_STR);
-        $s->bindParam(3, $repto		            	, PDO::PARAM_INT);
-        $s->bindParam(4, $timeztamp   					, PDO::PARAM_STR);
-        $s->bindParam(3, $repto     						, PDO::PARAM_INT);
+        $s->bindParam(4, $timeztamp		        , PDO::PARAM_STR);
+        $s->bindParam(3, $repto		            , PDO::PARAM_INT);
         $s->bindParam(2, $reply                 , PDO::PARAM_INT);
         $s->bindParam(1, $_POST["content"]      , PDO::PARAM_STR);
         $s->execute();
@@ -64,7 +55,7 @@ function get(string $board): void
 
     $num = intval($_GET['num'] ?? 50);
 
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn = new PDO("mysql:host=$db_config->servername;dbname=$db_config->dbname", $db_config->username, $db_config->password);
     if (isset($_GET["thread"])) {
         $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY bumpCount DESC LIMIT ?";
         $s = $conn->prepare($sql);
