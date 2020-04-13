@@ -66,13 +66,13 @@ function get(string $board): void
 
         $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
     if (isset($_GET["thread"])) {
-        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY bumpCount DESC LIMIT ?";
+        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY id DESC LIMIT ?";
         $s = $conn->prepare($sql);
         $s->bindParam(1, $_GET["thread"], PDO::PARAM_INT);
         $s->bindParam(2, $_GET["thread"], PDO::PARAM_INT);
         $s->bindParam(3, $num, PDO::PARAM_INT);
     } else {
-        $sql = "SELECT * FROM {$board} ORDER BY bumpCount DESC LIMIT ?";
+        $sql = "SELECT * FROM {$board} ORDER BY id DESC LIMIT ?";
         $s = $conn->prepare($sql);
         $s->bindParam(1, $num, PDO::PARAM_INT);
     }
