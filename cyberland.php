@@ -11,7 +11,10 @@ $port       = $db_config["port"];
 
 function post(string $board): void
 {
-    global $db_config;
+    global $servername;
+    global $dbname;
+    global $username;
+    global $password;
 
     // Fuck you spamfag (not gonna name you either ;] )
     $torNodes  = file("tornodes", FILE_IGNORE_NEW_LINES);
