@@ -3,6 +3,12 @@ require __DIR__ . '/vendor/autoload.php';
 require_once("RateLimit.php");
 $db_config = parse_ini_file("config/db.conf");
 
+$servername = $db_config["servername"];
+$dbname     = $db_config["dbname"];
+$username   = $db_config["username"];
+$password   = $db_config["password"];
+$port       = $db_config["port"];
+
 function post(string $board): void
 {
     global $db_config;
@@ -24,7 +30,7 @@ function post(string $board): void
         exit;
     } else {
         $reply = intval($_POST["replyTo"] ?? 0);
-        $conn = new PDO("mysql:host={$db_config->username};dbname={$db_config->dbname}", $db_config->username, $db_config->password);
+        $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
         $sql = "INSERT INTO {$board} (content, replyTo, bumpCount, time) VALUES (?,?,?,?)";
         $timeztamp = date("Y-m-d H:i:s");
         $repto = 0;
@@ -55,7 +61,7 @@ function get(string $board): void
 
     $num = intval($_GET['num'] ?? 50);
 
-    $conn = new PDO("mysql:host=$db_config->servername;dbname=$db_config->dbname", $db_config->username, $db_config->password);
+        $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
     if (isset($_GET["thread"])) {
         $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY bumpCount DESC LIMIT ?";
         $s = $conn->prepare($sql);
