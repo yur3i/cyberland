@@ -27,5 +27,5 @@ A: >hurrrr get post request go hur dur
 
 
 Q: How do I contribute and be a productive member of the community instead of bitching about things that don't work?
-A: The official repositorty is hosted here:
+A: The official repository is hosted here:
     https://github.com/yur3i/cyberland
