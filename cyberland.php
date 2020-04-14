@@ -62,19 +62,22 @@ function get(string $board): void
     global $username;
     global $password;
 
+	$offset = intval($_GET['offset'] ?? 0);
     $num = intval($_GET['num'] ?? 50);
 
         $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
     if (isset($_GET["thread"])) {
-        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY id DESC LIMIT ?";
+        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY id DESC LIMIT ?,?";
         $s = $conn->prepare($sql);
         $s->bindParam(1, $_GET["thread"], PDO::PARAM_INT);
         $s->bindParam(2, $_GET["thread"], PDO::PARAM_INT);
-        $s->bindParam(3, $num, PDO::PARAM_INT);
+		$s->bindParam(3, $offset, PDO::PARAM_INT);
+        $s->bindParam(4, $num, PDO::PARAM_INT);
     } else {
-        $sql = "SELECT * FROM {$board} ORDER BY id DESC LIMIT ?";
+        $sql = "SELECT * FROM {$board} ORDER BY id DESC LIMIT ?,?";
         $s = $conn->prepare($sql);
-        $s->bindParam(1, $num, PDO::PARAM_INT);
+		$s->bindParam(1, $offset, PDO::PARAM_INT);
+        $s->bindParam(2, $num, PDO::PARAM_INT);
     }
     $s->execute();
     $r = $s->fetchAll();
